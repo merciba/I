@@ -64,6 +64,16 @@ To bind the `#submit` button to the `i-name` element and refresh it according to
 
 C'est tout. 
 
+### I don't care to look at code, I want to see a demo.
+
+```
+git clone git@github.com:merciba/I.git && cd I
+npm install
+gulp test
+```
+
+A demo page will open in oyur browser, containing some real-time examples.
+
 ##### TODO
 
 * Tidy up the codebase.
