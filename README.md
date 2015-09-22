@@ -68,8 +68,7 @@ C'est tout.
 
 ```
 git clone git@github.com:merciba/I.git && cd I
-npm install
-gulp test
+npm install && npm test
 ```
 
 A demo page will open in oyur browser, containing some real-time examples.
