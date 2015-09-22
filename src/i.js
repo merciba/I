@@ -38,24 +38,24 @@ function loadScript(url, callback) {
 
 	var I = function(options) {
 		if ((typeof options !== 'undefined') && options.hasOwnProperty('id')) {
-			
-			if (typeof window.$ === 'undefined') {
-				
-				var withJQuery = function () {
-					loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", withMoment.bind(this))
-				} 
-				var withMoment = function () {
-					loadScript("http://cdn.ractivejs.org/latest/ractive.js", withRactive.bind(this))
-				}
-				var withRactive = function () {
-					loadScript("https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js", withRX.bind(this));
-				}
-				var withRX = function () {
-					this.init(options);
-				}
-
-				loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", withJQuery.bind(this))
+			var withJQuery = function () {
+				if (typeof window.moment === 'undefined') loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", withMoment.bind(this))
+				else withMoment.call(this)
+			} 
+			var withMoment = function () {
+				if (typeof window.Ractive === 'undefined') loadScript("http://cdn.ractivejs.org/latest/ractive.js", withRactive.bind(this))
+				else withRactive.call(this)
 			}
+			var withRactive = function () {
+				if (typeof window.Rx === 'undefined') loadScript("https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js", withRX.bind(this))
+				else withRX.call(this)
+			}
+			var withRX = function () {
+				this.init(options);
+			}
+			
+			if (typeof window.$ === 'undefined') loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", withJQuery.bind(this))
+			else withJQuery.call(this)
 
 		}
 		return this;
