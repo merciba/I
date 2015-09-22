@@ -1,0 +1,22 @@
+{
+  "name": "I",
+  "main": [
+    "dist/i.min.js"
+  ],
+  "version": "0.0.1",
+  "authors": [
+    "Merciba <team@merciba.com>"
+  ],
+  "description": "HTML5 comes alive",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
