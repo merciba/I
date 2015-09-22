@@ -1,31 +1,21 @@
 {
   "name": "I",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple data-binding library",
   "main": "index.html",
   "scripts": {
-    "test": "mocha"
+    "test": "gulp test"
   },
   "author": "Merciba <team@merciba.com>",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^11.1.0",
-    "chai": "^3.3.0",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.1",
     "gulp-watch": "^4.3.5",
-    "mocha": "^2.3.3",
-    "open": "0.0.5",
-    "vinyl-transform": "^1.0.0"
+    "open": "0.0.5"
   },
   "dependencies": {
-    "jquery": "^2.1.4",
-    "moment": "^2.10.6",
-    "pubnub": "^3.7.14",
-    "ractive": "^0.7.3",
-    "rx": "^3.1.2",
-    "through2": "^2.0.0"
   }
 }
