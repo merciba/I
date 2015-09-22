@@ -11,59 +11,19 @@ Stream Everything!
 
 ********************************************************************************************/
 
-function loadScript(url, callback) {
-
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-
-    if (script.readyState) { //IE
-        script.onreadystatechange = function () {
-            if (script.readyState == "loaded" || script.readyState == "complete") {
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else { //Others
-        script.onload = function () {
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-
-}
-
 (function(window) {
-
 	var I = function(options) {
 		if ((typeof options !== 'undefined') && options.hasOwnProperty('id')) {
-			var withJQuery = function () {
-				if (typeof window.moment === 'undefined') loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", withMoment.bind(this))
-				else withMoment.call(this)
-			} 
-			var withMoment = function () {
-				if (typeof window.Ractive === 'undefined') loadScript("http://cdn.ractivejs.org/latest/ractive.js", withRactive.bind(this))
-				else withRactive.call(this)
-			}
-			var withRactive = function () {
-				if (typeof window.Rx === 'undefined') loadScript("https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js", withRX.bind(this))
-				else withRX.call(this)
-			}
-			var withRX = function () {
-				this.init(options);
-			}
-			
-			if (typeof window.$ === 'undefined') loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", withJQuery.bind(this))
-			else withJQuery.call(this)
-
+			this.options = options
 		}
 		return this;
 	};
 
 	window.I = new I()
 	window.i = function(options) {
-		return new I(options)
+		var instance = new I(options)
+		window.I.instances.push(instance)
+		return instance;
 	}
 
 	I.prototype.init = function(options) {
@@ -89,7 +49,7 @@ function loadScript(url, callback) {
 			})
 		}
 
-		this.name = options.id;
+		this.id = options.id;
 		this.pipes = data;
 
 		this.setRactive({
@@ -142,6 +102,8 @@ function loadScript(url, callback) {
 	I.prototype.pipes = null
 
 	I.prototype.ractive = null
+
+	I.prototype.instances = []
 
 	/********************************************************************************************
 
@@ -241,5 +203,53 @@ function loadScript(url, callback) {
 	  }
 	  return results;
 	}
-
 })(window)
+
+/********************************************************************************************
+
+I.js Dependency Manegement
+
+********************************************************************************************/
+
+I.loadScript = function(url, callback) {
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+    if (script.readyState) { //IE
+        script.onreadystatechange = function () {
+            if (script.readyState == "loaded" || script.readyState == "complete") {
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else { //Others
+        script.onload = function () {
+            callback();
+        };
+    }
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+I.withRx = function () {
+	I.instances.map(function(instance) {
+		instance.init(instance.options)
+	})
+}
+
+I.withRactive = function () {
+	if (typeof Rx === 'undefined') I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js", I.withRx)
+	else I.withRx()
+}
+
+I.withMoment = function () {
+	if (typeof Ractive === 'undefined') I.loadScript("http://cdn.ractivejs.org/latest/ractive.js", I.withRactive)
+	else I.withRactive()
+}
+
+I.withJQuery = function () {
+	if (typeof moment === 'undefined') I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", I.withMoment)
+	else I.withMoment()
+} 
+
+if (typeof $ === 'undefined') I.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", I.withJQuery)
+else I.withJQuery()

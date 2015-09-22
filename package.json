@@ -11,11 +11,13 @@
   "devDependencies": {
     "browserify": "^11.1.0",
     "chai": "^3.3.0",
+    "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.1",
     "gulp-watch": "^4.3.5",
     "mocha": "^2.3.3",
+    "open": "0.0.5",
     "vinyl-transform": "^1.0.0"
   },
   "dependencies": {
