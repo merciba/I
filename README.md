@@ -71,7 +71,7 @@ git clone git@github.com:merciba/I.git && cd I
 npm install && npm test
 ```
 
-A demo page will open in oyur browser, containing some real-time examples.
+A demo page will open in your browser, containing some real-time examples.
 
 ##### TODO
 

@@ -22,7 +22,7 @@ gulp.task('watch', function() {
     gulp.watch('src/i.js', ['uglify']);
 });
 
-gulp.task('test', function() {
+gulp.task('demo', function() {
 	app.use(express.static('test'));
 
 	var server = app.listen(3000, function () {
@@ -32,9 +32,8 @@ gulp.task('test', function() {
 	  console.log('Demo server listening at http://localhost:'+port);
 	  open("http://localhost:"+port);
 	});
-
-	gulp.watch('src/i.js', ['uglify']);
-
 })
 
 gulp.task('default', ['watch'])
+gulp.task('dev', ['demo', 'watch'])
+gulp.task('test', ['demo'])
