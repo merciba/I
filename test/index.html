@@ -49,7 +49,7 @@
 
       var tweets = i({
         id: "tweets",
-        template: "{{text}}"
+        template: "{{user.screen_name}} - {{text}}"
       })
 
       PUBNUB.init({

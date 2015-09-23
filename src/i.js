@@ -124,7 +124,16 @@ Stream Everything!
 					data = this.hooks[k](data);
 				}
 				if (typeof data === 'string') result[k] = data
-				else result[k] = data[k]
+				else if (k.indexOf('.') > 0) {
+					var tmp = data
+					k.split('.').map(function(i) {
+						tmp = tmp[i]
+					})
+					result[k] = tmp
+				}
+				else {
+					result[k] = data[k]
+				}
 			}.bind(this))
 
 			this.set.call(this, result);
