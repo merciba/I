@@ -11,8 +11,20 @@ You shouldn't need to know how to handle Stream backpressure or have an advanced
 
 All you need is a streaming data source that emits events (like a button, for example), and a destination element to render. It's simple addition.  
 
-### Getting Started
+### I don't care to look at code, I want to see a demo.
 
+Ok, go [here](http://merciba.com/i).
+
+Or, provided you have Node.js installed:
+
+```
+git clone git@github.com:merciba/I.git && cd I
+npm install && npm test
+```
+
+A demo page will open in your browser, containing some real-time examples.
+
+### Getting Started
 ```HTML
 	<script type="text/javascript" src="dist/i.min.js"></script>
 ```
@@ -63,15 +75,6 @@ To bind the `#submit` button to the `i-name` element and refresh it according to
 ```
 
 C'est tout. 
-
-### I don't care to look at code, I want to see a demo.
-
-```
-git clone git@github.com:merciba/I.git && cd I
-npm install && npm test
-```
-
-A demo page will open in your browser, containing some real-time examples.
 
 ##### TODO
 

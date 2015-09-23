@@ -256,7 +256,11 @@ I.withMoment = function () {
 }
 
 I.withJQuery = function () {
-	if (typeof moment === 'undefined') I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", I.withMoment)
+	if (typeof moment === 'undefined') {
+		I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", function() {
+			I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.4.0/moment-timezone.min.js", I.withMoment)
+		}
+	}
 	else I.withMoment()
 } 
 
