@@ -81,9 +81,9 @@ Stream Everything!
 	I.prototype.streams = {
 		
 		clock: function() {
-			this.observer.onNext(moment().format('h:mm:ss a'));
+			this.observer.onNext(new Date());
 	        setInterval(function() {
-	          this.observer.onNext(moment().format('h:mm:ss a'));
+	          this.observer.onNext(new Date());
 	        }.bind(this), 1000);
 	    }
 
@@ -99,7 +99,7 @@ Stream Everything!
 
 	I.prototype.type = "default"
 
-	I.prototype.pipes = null
+	I.prototype.pipes = {}
 
 	I.prototype.ractive = null
 
@@ -124,6 +124,7 @@ Stream Everything!
 					data = this.hooks[k](data);
 				}
 				if (typeof data === 'string') result[k] = data
+				else if (data instanceof Date) result[k] = data.toString()
 				else if (k.indexOf('.') > 0) {
 					var tmp = data
 					k.split('.').map(function(i) {
@@ -148,7 +149,7 @@ Stream Everything!
 				}
 			}.bind(this));
 		}
-		else {
+		else if (this.hasOwnProperty('stream')) {
 			var observable = this.createObservable(this.stream);
 			this.pipes[key] = observable.subscribe(update.bind(this));
 		}
@@ -187,9 +188,7 @@ Stream Everything!
 	I.prototype.getStream = function(name) {
 		if (typeof this.stream === 'undefined') {
 			if (window.I.streams.hasOwnProperty(name)) this.stream = window.I.streams[name]
-			else this.stream = function() {
-				
-			}
+			else this.stream = function() {}
 		}
 	}
 
@@ -250,14 +249,9 @@ I.withRactive = function () {
 	else I.withRx()
 }
 
-I.withMoment = function () {
-	if (typeof Ractive === 'undefined') I.loadScript("http://cdn.ractivejs.org/latest/ractive.js", I.withRactive)
-	else I.withRactive()
-}
-
 I.withJQuery = function () {
-	if (typeof moment === 'undefined') I.loadScript("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js", I.withMoment)
-	else I.withMoment()
+	if (typeof moment === 'undefined') I.loadScript("http://cdn.ractivejs.org/latest/ractive.js", I.withRactive)
+	else I.withRactive()
 } 
 
 if (typeof $ === 'undefined') I.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js", I.withJQuery)

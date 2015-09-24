@@ -27,12 +27,7 @@
   <script>
       var clock = i({
         id: "clock",
-        template: "Time in New York: <b>{{newyork}}</b><br/> Time in Paris: <b>{{paris}}</b>",
-        hooks: {
-          paris: function(time) {
-            return moment().add(6, 'hours').format('h:mm:ss a')
-          }
-        }
+        template: "Time: <b>{{time}}</b>",
       });
 
       var testInput = i({
