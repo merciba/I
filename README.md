@@ -91,7 +91,9 @@ To bind the `#submit` button to the `i-namer` element and auto-refresh it via te
 
 ### Using PubNub Streams
 
-I.js also has built-in support for [PubNub]() streams. Here's an example of binding Tweets to a DOM element.
+I.js also has built-in support for [PubNub](http://www.pubnub.com/developers/tutorials/publish-subscribe/) streams. 
+
+Here's an example of binding PubNub's [Twitter Firehose](http://www.pubnub.com/developers/data-streams/twitter-stream) to a DOM element.
 
 Let's say you have the following HTML.
 
