@@ -1,6 +1,15 @@
 I.js
 ====
 
+A streaming UI library.
+
+## Table of Contents
+
+[Getting Started](#getting-started)
+[Binding Streams to the DOM](#binding-streams-to-the-dom)
+[Binding DOM Elements to Each Other](#binding-dom-elements-to-each-other)
+[Using PubNub Streams](#using-pubnub-streams)
+
 ### Stream Everything
 
 I.js is not just any old data-binding library. 
