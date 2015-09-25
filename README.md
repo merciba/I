@@ -70,13 +70,14 @@ Say you have the following HTML, a naming prompt.
 
 Let's say we want to make button `#submit`, when clicked, trigger an update of `i-namer`, using whatever's in field `#name`. 
 
-Let's also say, you're a huge Eminem fan, and so you want to append " Shady" to the end of everyone's name.
+Let's also say, you're a huge Eminem fan, and so you want to append " Shady" to the end of everyone's name.  
+Using I.js Hooks, you can do exactly that.
 
 To bind the `#submit` button to the `i-namer` element and auto-refresh it via template:
 
 ```JavaScript
 	var name = i({
-    	id: 'namer',								// id must match the i-* attribute, in this case - i-name
+    	id: 'namer',								// id must match the i-* attribute, in this case - i-namer
     	template: 'Hi, my name is {{name}}', 		// you can name any variables in your template with {{variable}}, i.js will automatically save them and use them
 		source: 'click #submit', 					// This time, specify 'source' with the method and element id. Similar to Backbone.js views
         capture: '#name',
