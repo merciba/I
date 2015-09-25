@@ -72,7 +72,7 @@ Say you have the following HTML, a naming prompt.
 	<div>
 		 <div>What is your name?</div>
 		 <span i-namer ></span>.
-		 <input id="name" type="text" placeholder="Your name" />
+		 <input id="name" type="text" placeholder="Slim" />
 		 <button id="submit" >Submit</button>
 	</div>
 ```
