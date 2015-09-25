@@ -79,8 +79,6 @@ Stream Everything!
 
 	I.prototype.ractive = null
 
-	I.prototype.val = {}
-
 	/********************************************************************************************
 
 	I.js Methods
@@ -135,8 +133,10 @@ Stream Everything!
 						message: this.send.bind(this)
 					}
 					Object.keys(this.source.pubnub).map(function(key) {
-						if (key === 'publish_key') init.publish_key = this.source.pubnub.publish_key
-						if (key === 'subscribe_key') init.subscribe_key = this.source.pubnub.subscribe_key
+						if (key === 'subscribe_key') {
+							init.subscribe_key = this.source.pubnub.subscribe_key
+							delete this.source.pubnub.subscribe_key
+						}
 						if (key === 'channel') sub[key] = this.source.pubnub.channel
 					}.bind(this))
 					PUBNUB.init(init).subscribe(sub)
