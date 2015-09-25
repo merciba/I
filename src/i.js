@@ -15,6 +15,21 @@ Stream Everything!
 
 	var I = function(options) {
 		if (typeof options !== 'undefined') {
+			if (options.hasOwnProperty('id')) this.id = options.id
+			else throw new Error("i.js instances must have an id")
+
+			if (options.hasOwnProperty('template')) this.template = options.template
+			else throw new Error("i.js instances must have a template")
+
+			if (options.hasOwnProperty('source')) this.source = options.source
+			else throw new Error("i.js instances must have a source. This can be either a function, CSS selector, or PubNub stream")
+			
+			if (options.hasOwnProperty('hooks')) this.hooks = options.hooks
+
+			if (options.hasOwnProperty('capture')) {
+				if (typeof options.source === 'string') this.capture = options.capture
+				else throw new Error("Only specify 'capture' when 'source' is a string containing an element selector and a method, e.g. 'click #<id>'")
+			}
 			this.options = options
 		}
 		return this
@@ -30,22 +45,6 @@ Stream Everything!
 
 	I.prototype.init = function(options) {
 		var el = $('[i-'+options.id+']')
-
-		if (options.hasOwnProperty('id')) this.id = options.id
-		else throw new Error("i.js instances must have an id")
-
-		if (options.hasOwnProperty('template')) this.template = options.template
-		else throw new Error("i.js instances must have a template")
-
-		if (options.hasOwnProperty('source')) this.source = options.source
-		else throw new Error("i.js instances must have a source. This can be either a function, CSS selector, or PubNub stream")
-		
-		if (options.hasOwnProperty('hooks')) this.hooks = options.hooks
-
-		if (options.hasOwnProperty('capture')) {
-			if (typeof options.source === 'string') this.capture = options.capture
-			else throw new Error("Only specify 'capture' when 'source' is a string containing an element selector and a method, e.g. 'click #<id>'")
-		}
 
 		this.tokens = this.getTokens(this.template)
 		var ractiveOptions = {
@@ -118,7 +117,7 @@ Stream Everything!
 		}
 
 		if (typeof this.source === 'string') {
-			if (!this.hasOwnProperty('capture')) throw new Error("i.js instances using a CSS selector as source must also specify an element to capture. They can be the same.")
+			if (!this.hasOwnProperty('capture')) throw new Error("i.js instances using a CSS selector as source must also specify an element whose value to capture. They can be the same.")
 			this.srcMethod = this.source.split(' ')[0]
 			this.srcSelector = this.source.split(' ')[1]
 			if (!this.srcSelector.match('#')) throw new Error("Class names are not supported for input sources. Please use an #<id>")
@@ -129,7 +128,7 @@ Stream Everything!
 			var observable = Rx.Observable.create(function(observer) {
 				this.observer = observer
 				
-				if (typeof this.source === 'function') this.source(this)
+				if (typeof this.source === 'function') this.source(this.send.bind(this))
 				else if (this.source.hasOwnProperty("pubnub")) {
 					var init = {}
 					var sub = {
@@ -151,10 +150,8 @@ Stream Everything!
 	}
 
 	I.prototype.send = function(data) {
-		if (this.observer) this.observer.onNext(data)
-		else {
-			$(this.srcSelector)[this.srcMethod](data)
-		}
+		if (this.srcSelector && this.srcMethod) $(this.srcSelector)[this.srcMethod](data)
+		else this.observer.onNext(data)
 	}
 
 	I.prototype.set = function(data) {

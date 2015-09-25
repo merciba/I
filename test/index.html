@@ -27,9 +27,9 @@
       var clock = i({
         id: "clock",
         template: "Time: <b>{{time}}</b>",
-        source: function(self) {
+        source: function(next) {
           setInterval(function() {
-            self.send(new Date())
+            next(new Date())
           }, 1000)
         }
       });

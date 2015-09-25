@@ -54,9 +54,9 @@ To bind a data stream to this element and refresh it according to a template:
 	var clock = i({
 		id: "clock",
 		template: "Time: <b>{{time}}</b>",
-		source: function(self) {
+		source: function(next) {
 			setInterval(function() {
-				self.send(new Date())  	// If you use a function as your data source, the instance method 'send' is provided to send objects down the pipe.
+				next(new Date())  	// 'next' is a special function that sends data down the pipe. 
 			}, 1000)
 		}
 	});
