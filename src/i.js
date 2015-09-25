@@ -141,7 +141,9 @@ Stream Everything!
 					}.bind(this))
 					PUBNUB.init(init).subscribe(sub)
 				}
-
+				else if (this.source.hasOwnProperty("on")) {
+					this.source.on("i-"+this.id, this.send.bind(this))
+				}
 			}.bind(this))
 			this.subscription = observable.subscribe(update.bind(this))
 		}
