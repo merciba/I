@@ -12,8 +12,8 @@
         <div i-clock ></div><br>
         <br>
         <div class="pure-form">
-          <div i-testInput style="padding: 5px;"></div>
-          <input id="testInput" placeholder="Slim Shady" />
+          <div i-namer style="padding: 5px;"></div>
+          <input id="testInput" value="Slim" />
           <button id="testSubmit" class="pure-button">Submit</button>
         </div>
         <br>
@@ -22,37 +22,40 @@
         <div i-tweets style="padding: 5px;"></div>
       </div>
   </body>
-  <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
   <script type="text/javascript" src='i.min.js'></script>
   <script>
       var clock = i({
         id: "clock",
         template: "Time: <b>{{time}}</b>",
+        source: function(self) {
+          setInterval(function() {
+            self.send(new Date())
+          }, 1000)
+        }
       });
 
       var testInput = i({
-        id: "testInput",
-        template: "Hi, my name is: {{val}}",
-        fromInput: [
-          {
-            el: "#testSubmit",
-            method: 'click'
+        id: "namer",
+        template: "Hi, my name is: {{name}}",
+        source: "click #testSubmit",
+        capture: '#testInput',
+        hooks: {
+          name: function(name) {
+            return name+" Shady"
           }
-        ],
-        capture: '#testInput'
+        }
       })
 
       var tweets = i({
         id: "tweets",
-        template: '<img style="border-radius: 5px; margin: 5px;" src="{{user.profile_image_url}}"> <a style="text-decoration: none; font-weight: bold;" href="{{user.url}}">{{user.screen_name}}</a><p>{{text}}</p>'
+        template: '<img style="border-radius: 5px; margin: 5px;" src="{{user.profile_image_url}}"> <a style="text-decoration: none; font-weight: bold;" href="{{user.url}}">{{user.screen_name}}</a><p>{{text}}</p>',
+        source: {
+          pubnub: {
+            channel: 'pubnub-twitter',
+            subscribe_key: 'sub-c-78806dd4-42a6-11e4-aed8-02ee2ddab7fe'
+          }
+        }
       })
-
-      PUBNUB.init({
-          subscribe_key: 'sub-c-78806dd4-42a6-11e4-aed8-02ee2ddab7fe'
-      }).subscribe({
-        channel : 'pubnub-twitter',
-        message : I.asCallback(tweets)
-      });
 
   </script>
 </html>

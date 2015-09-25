@@ -43,38 +43,76 @@ To bind a data stream to this element and refresh it according to a template:
 
 ```JavaScript
 	var clock = i({
-    	id: "clock",
-		template: "Time in NY: {{newyork}}"
+		id: "clock",
+		template: "Time: <b>{{time}}</b>",
+		source: function(self) {
+			setInterval(function() {
+				self.send(new Date())  	// If you use a function as your data source, the instance method 'send' is provided to send objects down the pipe.
+			}, 1000)
+		}
 	});
 ```
 
 Et voilà quoi. Your `i-clock` div will refresh every second with the latest time.
 
-`clock` is a built-in I.js stream, however, you can also register your own.  
-
 ### Binding DOM Elements To Each Other
 
-Say you have the following HTML.
+Say you have the following HTML, a naming prompt.
 
 ```HTML
 	<div>
-		 Je m'appelle <span i-name ></span>. Comment vous appelez-vous?
-		 <input id="name" type="text" placeholder="Votre nom" />
+		 <div>What is your name?</div>
+		 <span i-namer ></span>.
+		 <input id="name" type="text" placeholder="Your name" />
 		 <button id="submit" >Submit</button>
 	</div>
 ```
 
-To bind the `#submit` button to the `i-name` element and refresh it according to a template:
+Let's say we want to make button `#submit`, when clicked, trigger an update of `i-namer`, using whatever's in field `#name`. 
+
+Let's also say, you're a huge Eminem fan, and so you want to append " Shady" to the end of everyone's name.
+
+To bind the `#submit` button to the `i-namer` element and auto-refresh it via template:
 
 ```JavaScript
 	var name = i({
-    	id: "name",
-		fromInput: [{ el: "#testSubmit", method: 'click' }],
-        capture: '#name'
+    	id: 'namer',								// id must match the i-* attribute, in this case - i-name
+    	template: 'Hi, my name is {{name}}', 		// you can name any variables in your template with {{variable}}, i.js will automatically save them and use them
+		source: 'click #submit', 					// This time, specify 'source' with the method and element id. Similar to Backbone.js views
+        capture: '#name',
+        hooks: {
+        	name: function(name) { 			
+				return name+" Shady"; 				// Append "Shady" to the end of every name passed through
+			}			 
+        }
 	});
 ```
 
-C'est tout. 
+### Using PubNub Streams
+
+I.js also has built-in support for [PubNub]() streams. Here's an example of binding Tweets to a DOM element.
+
+Let's say you have the following HTML.
+
+```HTML
+	<h2>Tweets</h2>
+    <div i-tweets></div>
+```
+
+```JavaScript
+	var tweets = i({
+        id: 'tweets',
+        template: '<img src="{{user.profile_image_url}}"> <a href="{{user.url}}">{{user.screen_name}}</a><p>{{text}}</p>',
+        source: {
+			pubnub: {
+				channel: 'pubnub-twitter',										// Use any PubNub channel name
+				subscribe_key: 'sub-c-78806dd4-42a6-11e4-aed8-02ee2ddab7fe' 	// Use any PubNub subscribe key
+			}
+		}
+    })
+```
+
+Tweets will appear and refresh the div as they come in. 
 
 ##### TODO
 
