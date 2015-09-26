@@ -9,6 +9,7 @@ A streaming UI library.
 [Binding Streams to the DOM](#binding-streams-to-the-dom)  
 [Binding DOM Elements to Each Other](#binding-dom-elements-to-each-other)  
 [Using PubNub Streams](#using-pubnub-streams)  
+[Using WebSockets](#using-websockets)  
 [Wiki](https://github.com/merciba/I/wiki)
 
 ### Stream Everything
