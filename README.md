@@ -151,17 +151,19 @@ var element = i({
 ```JavaScript
 // Server-side (Node.js)
 
+var handler = function() {
+	io.on('connection', function (socket) {
+	    socket.emit('i-myElement', { value: 'world' });
+	    setTimeout(function() {
+	    	socket.emit('i-myElement', { value: 'Merciba' });
+	    }, 3000)
+	});
+}
+
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 
 app.listen(80);
-
-io.on('connection', function (socket) {
-    socket.emit('i-myElement', { value: 'world' });
-    setTimeout(function() {
-    	socket.emit('i-myElement', { value: 'Merciba' });
-    }, 3000)
-});
 ```
 
 This example will first print "Hello world", then, after 3 seconds, "Hello Merciba". 
