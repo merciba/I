@@ -91,24 +91,12 @@ Stream Everything!
 			var result = {}
 
 			this.tokens.map(function(k) {
-				if (this.hasOwnProperty('capture')) {
-					data = $(this.capture).val();
-				}
-				if (this.hasOwnProperty('hooks') && this.hooks.hasOwnProperty(k)) {
-					data = this.hooks[k](data);
-				}
-				if (typeof data === 'string') result[k] = data
-				else if (data instanceof Date) result[k] = data.toString()
-				else if (k.indexOf('.') > 0) {
-					var tmp = data
-					k.split('.').map(function(i) {
-						tmp = tmp[i]
-					})
-					result[k] = tmp
-				}
-				else {
-					result[k] = data[k]
-				}
+				if (this.hasOwnProperty('capture')) var capture = this.getProperty(k, this.capture)
+				if (this.hasOwnProperty('hooks')) var hook = this.getProperty(k, this.hooks)
+
+				if (capture) result[k] = this.getProperty(k, $(capture).val());
+				else if (hook) result[k] = hook(this.getProperty(k, data))
+				else result[k] = this.getProperty(k, data)
 			}.bind(this))
 
 			this.set.call(this, result);
@@ -177,6 +165,20 @@ Stream Everything!
 	    results.push(text[1]);
 	  }
 	  return results;
+	}
+
+	I.prototype.getProperty = function(key, data) {
+		if (typeof data === 'string') return data
+		else if (data instanceof Date) return data.toString()
+		else if (key.indexOf('.') > 0) {
+			var tmp = data
+			key.split('.').map(function(i) {
+				tmp = tmp[i]
+			})
+			return tmp
+		}
+		else if (data.hasOwnProperty(key)) return data[key]
+		else return null
 	}
 })(window)
 

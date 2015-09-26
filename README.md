@@ -90,7 +90,9 @@ To bind the `#submit` button to the `i-namer` element and auto-refresh it via te
     	id: 'namer',								// id must match the i-* attribute, in this case - i-namer
     	template: 'Hi, my name is {{name}}', 		// you can name any variables in your template with {{variable}}, i.js will automatically save them and use them
 		source: 'click #submit', 					// This time, specify 'source' with the method and element id. Similar to Backbone.js views
-        capture: '#name',
+        capture: {
+        	name: '#name'							// Specify the input to be captured with 'JQuery.val()'
+        },
         hooks: {
         	name: function(name) { 			
 				return name+" Shady"; 				// Append "Shady" to the end of every name passed through
@@ -127,8 +129,42 @@ Let's say you have the following HTML.
 
 Tweets will appear and refresh the div as they come in. 
 
+### Using WebSockets
+
+I.js also has built-in support for WebSockets or any other event-emitting object.
+
+Simply pass it in as the `source` option and I.js will listen automatically on a channel corresponding to the `i-<id>` of the I.js instance. For example, using popular WebSockets library [Socket.io](http://socket.io/): 
+
+```JavaScript
+// Client-side (Browser)
+
+var socket = io('http://<path-to-socket>');
+
+var element = i({
+    id: 'myElement',
+    template: 'Hello {{value}}',
+    source: socket
+})
+```
+
+```JavaScript
+// Server-side (Node.js)
+
+var app = require('http').createServer(handler)
+var io = require('socket.io')(app);
+
+app.listen(80);
+
+io.on('connection', function (socket) {
+    socket.emit('i-myElement', { value: 'world' });
+    setTimeout(function() {
+    	socket.emit('i-myElement', { value: 'Merciba' });
+    }, 3000)
+});
+```
+
+This example will first print "Hello world", then, after 3 seconds, "Hello Merciba". 
+
 ##### TODO
 
-* Tidy up the codebase.
-* Simplify the API. 
 * Better validation with warning and error messages.

@@ -38,7 +38,9 @@
         id: "namer",
         template: "Hi, my name is: {{name}}",
         source: "click #testSubmit",
-        capture: '#testInput',
+        capture: {
+          name: '#testInput'
+        },
         hooks: {
           name: function(name) {
             return name+" Shady"
