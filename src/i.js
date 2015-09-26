@@ -91,12 +91,13 @@ Stream Everything!
 			var result = {}
 
 			this.tokens.map(function(k) {
+				var prop = this.getProperty(k, data)
 				if (this.hasOwnProperty('capture')) var capture = this.getProperty(k, this.capture)
 				if (this.hasOwnProperty('hooks')) var hook = this.getProperty(k, this.hooks)
 
-				if (capture) result[k] = this.getProperty(k, $(capture).val());
-				else if (hook) result[k] = hook(this.getProperty(k, data))
-				else result[k] = this.getProperty(k, data)
+				if (capture) prop = this.getProperty(k, $(capture).val())
+				if (hook) prop = hook(prop)
+				result[k] = prop
 			}.bind(this))
 
 			this.set.call(this, result);
