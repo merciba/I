@@ -58,7 +58,7 @@ To bind a data stream to this element and refresh it according to a template:
 		template: "Time: <b>{{time}}</b>",
 		source: function(next) {
 			setInterval(function() {
-				next(new Date())  	// 'next' is a special function that sends data down the pipe. 
+				next({ time: new Date() })  	// 'next' is a special function that sends data down the pipe. 
 			}, 1000)
 		}
 	});
