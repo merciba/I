@@ -237,7 +237,7 @@ I.withRactive = function () {
 }
 
 I.withJQuery = function () {
-	if (typeof moment === 'undefined') I.loadScript("http://cdn.ractivejs.org/latest/ractive.js", I.withRactive)
+	if (typeof Ractive === 'undefined') I.loadScript("http://cdn.ractivejs.org/latest/ractive.js", I.withRactive)
 	else I.withRactive()
 } 
 
