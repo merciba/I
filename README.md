@@ -18,8 +18,6 @@ I.js is not just any old data-binding library.
 
 I.js aims to blend together event-based paradigms in a tight, orderly way, that makes more sense to human developers. 
 
-You shouldn't need to know how to handle Stream backpressure or have an advanced Master's degree in Functional Programming to leverage their shared potential. 
-
 All you need is a streaming data source that emits events (like a button, for example), and a destination element to render. It's simple addition.  
 
 ### I don't care to look at code, I want to see a demo.
@@ -151,7 +149,7 @@ var element = i({
 ```JavaScript
 // Server-side (Node.js)
 
-var handler = function() {
+var handler = function(req, res) {
 	io.on('connection', function (socket) {
 	    socket.emit('i-myElement', { value: 'world' });
 	    setTimeout(function() {

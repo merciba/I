@@ -153,10 +153,10 @@ Stream Everything!
 		}.bind(this));
 	}
 
-	I.prototype.asCallback = function(instance) {
+	I.prototype.asCallback = function() {
 		return function(data) {
-			this.observer.onNext(data)
-		}.bind(instance)
+			if (this.observer) this.observer.onNext(data)
+		}.bind(this)
 	}
 
 	I.prototype.getTokens = function(str) {
@@ -181,6 +181,17 @@ Stream Everything!
 		else if (data.hasOwnProperty(key)) return data[key]
 		else return null
 	}
+
+	I.prototype.cleanup = function() {
+		if (this.ractive) this.ractive.teardown()
+		if (this.subscription) this.subscription.dispose()
+		if (this.source.pubnub) {
+			PUBNUB.unsubscribe({
+				channel: this.source.pubnub.channel
+			})
+		}
+	}
+
 })(window)
 
 /********************************************************************************************
